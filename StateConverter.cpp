@@ -1,28 +1,23 @@
 #include "StateConverter.h"
-#include <unordered_map>
 
-AppState StateMapper::mapToAppState(const std::string& quicktelState) {
-    static const std::unordered_map<std::string, QuicktelState> stringToState = {
-        {"SUCCEED", QuicktelState::SUCCEED},
-        {"UPDATE", QuicktelState::UPDATE},
-        {"WRITE_DONE", QuicktelState::WRITE_DONE},
-        {"SYNC_PENDING", QuicktelState::SYNC_PENDING},
-        {"BACKUP", QuicktelState::BACKUP},
-        {"CANCEL", QuicktelState::CANCEL}
-    };
-    
-    auto it = stringToState.find(quicktelState);
-    return mapToAppState(it != stringToState.end() ? it->second : QuicktelState::UNKNOWN);
+ApplicationState StateConverter::convertToAppState(const std::string& quicktelStatus) {
+    if (quicktelStatus == "SUCCESSFUL") return ApplicationState::SUCCESS;
+    if (quicktelStatus == "IN_PROGRESS") return ApplicationState::UPDATE_ONGOING;
+    if (quicktelStatus == "WRITE_COMPLETE") return ApplicationState::WRITE_DONE;
+    if (quicktelStatus == "SYNC_WAITING") return ApplicationState::SYNC_WAITING;
+    if (quicktelStatus == "BACKUP_RUNNING") return ApplicationState::BACKUP_ONGOING;
+    if (quicktelStatus == "CANCELLED") return ApplicationState::OPERATION_CANCELLED;
+    return ApplicationState::INVALID_STATUS;
 }
 
-AppState StateMapper::mapToAppState(QuicktelState quicktelState) {
-    switch (quicktelState) {
-        case QuicktelState::SUCCEED:     return AppState::SUCCESS;
-        case QuicktelState::UPDATE:      return AppState::UPDATE_IN_PROGRESS;
-        case QuicktelState::WRITE_DONE:  return AppState::WRITE_COMPLETED;
-        case QuicktelState::SYNC_PENDING:return AppState::SYNC_PENDING;
-        case QuicktelState::BACKUP:      return AppState::BACKUP_IN_PROGRESS;
-        case QuicktelState::CANCEL:      return AppState::OPERATION_CANCELLED;
-        default:                        return AppState::INVALID_STATE;
+ApplicationState StateConverter::convertToAppState(QuicktelStatus quicktelStatus) {
+    switch (quicktelStatus) {
+        case QuicktelStatus::SUCCESSFUL: return ApplicationState::SUCCESS;
+        case QuicktelStatus::IN_PROGRESS: return ApplicationState::UPDATE_ONGOING;
+        case QuicktelStatus::WRITE_COMPLETE: return ApplicationState::WRITE_DONE;
+        case QuicktelStatus::SYNC_WAITING: return ApplicationState::SYNC_WAITING;
+        case QuicktelStatus::BACKUP_RUNNING: return ApplicationState::BACKUP_ONGOING;
+        case QuicktelStatus::CANCELLED: return ApplicationState::OPERATION_CANCELLED;
+        default: return ApplicationState::INVALID_STATUS;
     }
 }
