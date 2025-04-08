@@ -26,4 +26,10 @@ TEST(StateConverterTest, EnumConversions) {
     EXPECT_EQ(StateConverter::convertToAppState(QuicktelStatus::SUCCESSFUL), ApplicationState::SUCCESS);
     EXPECT_EQ(StateConverter::convertToAppState(QuicktelStatus::IN_PROGRESS), ApplicationState::UPDATE_ONGOING);
     EXPECT_EQ(StateConverter::convertToAppState(QuicktelStatus::UNKNOWN_STATUS), ApplicationState::INVALID_STATUS);
+    EXPECT_EQ(StateConverter::convertToAppState(QuicktelStatus::WRITE_COMPLETE), ApplicationState::WRITE_DONE);
+    EXPECT_EQ(StateConverter::convertToAppState(QuicktelStatus::SYNC_WAITING), ApplicationState::SYNC_WAITING);
+    EXPECT_EQ(StateConverter::convertToAppState(QuicktelStatus::BACKUP_RUNNING), ApplicationState::BACKUP_ONGOING);
+    EXPECT_EQ(StateConverter::convertToAppState(QuicktelStatus::CANCELLED), ApplicationState::OPERATION_CANCELLED);
+
+    
 }
